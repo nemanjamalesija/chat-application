@@ -6,7 +6,7 @@ export default async function Home() {
 
   return (
     <main className='text-red-600'>
-      <Button>Button</Button>
+      <Button variant='ghost'>Hello</Button>
     </main>
   );
 }
