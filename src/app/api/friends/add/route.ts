@@ -60,7 +60,9 @@ export async function POST(req: Request) {
     )) as 0 | 1;
 
     if (!isAlreadyFriends) {
-      return new Response('Already added this user', { status: 400 });
+      return new Response('This user is already in your friends list', {
+        status: 400,
+      });
     }
 
     // valid request, send friend request
@@ -72,7 +74,7 @@ export async function POST(req: Request) {
       return new Response('Invalud request payload', { status: 422 });
     }
 
-    return new Response('Invalud request', { status: 400 });
+    return new Response('Invalid request', { status: 400 });
     console.log(error);
   }
 }
