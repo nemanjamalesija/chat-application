@@ -5,9 +5,9 @@ import { ButtonHTMLAttributes, FC, useState } from 'react';
 import Button from './ui/Button';
 import { Loader2, LogOut } from 'lucide-react';
 
-type SignOutButtonProps = ButtonHTMLAttributes<HTMLAnchorElement>;
+interface SignOutButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
-const SignOutButton: FC<SignOutButtonProps> = (...props) => {
+const SignOutButton: FC<SignOutButtonProps> = ({ ...props }) => {
   const [isSigningOut, setIsSigningOut] = useState<boolean>(false);
 
   const handleSignOut = async () => {
@@ -25,7 +25,7 @@ const SignOutButton: FC<SignOutButtonProps> = (...props) => {
   return (
     <Button {...props} variant='ghost' onClick={handleSignOut}>
       {isSigningOut ? (
-        <Loader2 className='animate-s h-4 w-4' />
+        <Loader2 className='animate-spin h-4 w-4' />
       ) : (
         <LogOut className='w-4 h-4' />
       )}
