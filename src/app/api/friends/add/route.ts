@@ -11,19 +11,10 @@ export async function POST(req: Request) {
   try {
     const { email: inputEmail } = addFriendValidator.parse(body.email);
 
-    const APIResponse = await fetch(
-      `${process.env.UPSTASH_REST_URL}/get/user:email:${inputEmail}`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
-        },
-        cache: 'no-store',
-      }
-    );
-
-    const data = (await APIResponse.json()) as { result: string | null };
-
-    const idToAdd = data.result;
+    const idToAdd = (await fetchRedis(
+      'get',
+      `user:email:${inputEmail}`
+    )) as string;
 
     if (!idToAdd) {
       return new Response('This user does not exist', { status: 400 });
@@ -43,23 +34,23 @@ export async function POST(req: Request) {
 
     // check if user is already added
     const isAlreadyAdded = (await fetchRedis(
-      'sismbember',
+      'sismember',
       `user:${idToAdd}:incoming_friend_requests`,
       session.user.id
     )) as 0 | 1;
 
-    if (!isAlreadyAdded) {
+    if (isAlreadyAdded) {
       return new Response('Already added this user', { status: 400 });
     }
 
     // check if a friend already exists
     const isAlreadyFriends = (await fetchRedis(
-      'sismbember',
+      'sismember',
       `user:${session.user.id}:friends`,
       idToAdd
     )) as 0 | 1;
 
-    if (!isAlreadyFriends) {
+    if (isAlreadyFriends) {
       return new Response('This user is already in your friends list', {
         status: 400,
       });
@@ -71,10 +62,9 @@ export async function POST(req: Request) {
     return new Response('OK');
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return new Response('Invalud request payload', { status: 422 });
+      return new Response('Invalid request payload', { status: 422 });
     }
-
-    return new Response('Invalid request', { status: 400 });
     console.log(error);
+    return new Response('Invalid request', { status: 400 });
   }
 }
