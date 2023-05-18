@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Icons } from '@/components/Icons';
 import { Icon } from '@/components/Icons';
+import SignOutButton from '@/components/SignOutButton';
 
 type LayoutProps = {
   children: ReactNode;
@@ -92,6 +93,7 @@ const layout = async ({ children }: LayoutProps) => {
                 </li>
               </ul>
             </li>
+            <SignOutButton className='h-full aspect-square' />
           </ul>
         </nav>
       </div>
