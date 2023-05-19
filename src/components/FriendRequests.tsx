@@ -1,7 +1,9 @@
 'use client';
 
 import { IncomingFriendRequestType } from '@/types/pusher';
+import axios from 'axios';
 import { Check, UserPlus, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { FC, useState } from 'react';
 
 type IncomingFriendRequestsProps = {
@@ -17,6 +19,31 @@ const FriendRequests: FC<IncomingFriendRequestsProps> = ({
     IncomingFriendRequestType[]
   >(incomingFriendRequests);
 
+  const router = useRouter();
+  const acceptFriend = async (senderId: string) => {
+    await axios.post('/api/friends/accept', {
+      id: senderId,
+    });
+
+    setFriendRequests((prev) =>
+      prev.filter((req) => req.senderId !== senderId)
+    );
+
+    router.refresh();
+  };
+
+  const dennyFriend = async (senderId: string) => {
+    await axios.post('/api/requests/deny', {
+      id: senderId,
+    });
+
+    setFriendRequests((prev) =>
+      prev.filter((req) => req.senderId !== senderId)
+    );
+
+    router.refresh();
+  };
+
   return (
     <div>
       {friendRequests.length === 0 ? (
@@ -30,6 +57,7 @@ const FriendRequests: FC<IncomingFriendRequestsProps> = ({
               <button
                 aria-label='accept friend'
                 className='w-8 h-8 bg-indigo-600 hover:bg-indigo-700 grid place-items-center rounded-full transition hover:shadow-md'
+                onClick={() => acceptFriend(req.senderId)}
               >
                 <Check className='font-semibold text-white w-3/4 h-/4' />
               </button>
