@@ -44,13 +44,13 @@ export async function POST(req: Request) {
     }
 
     // check if a friend already exists
-    const isAlreadyFriends = (await fetchRedis(
+    const isAlreadyFriend = (await fetchRedis(
       'sismember',
       `user:${session.user.id}:friends`,
       idToAdd
     )) as 0 | 1;
 
-    if (isAlreadyFriends) {
+    if (isAlreadyFriend) {
       return new Response('This user is already in your friends list', {
         status: 400,
       });
