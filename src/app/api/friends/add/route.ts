@@ -3,7 +3,7 @@ import { authOptions } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { addFriendValidator } from '@/lib/validations/add-friend';
 import { getServerSession } from 'next-auth';
-import { ZodError, z } from 'zod';
+import { z } from 'zod';
 
 export async function POST(req: Request) {
   const body = await req.json();
