@@ -43,7 +43,7 @@ const Page = async ({ params }: PageProps) => {
 
   const { user } = session;
 
-  // /dashboard/chat/
+  // link: /dashboard/chat/chat1--chat2
   const [userId1, userId2] = chatId.split('--');
 
   if (user.id !== userId1 && user.id !== userId2) return notFound();
