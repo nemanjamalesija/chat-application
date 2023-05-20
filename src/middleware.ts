@@ -6,24 +6,18 @@ export default withAuth(
   async function middleware(req) {
     // get the path
     const pathname = req.nextUrl.pathname;
-
     // manage route protection
     const isAuth = await getToken({ req });
-
     const isLoginPage = pathname.startsWith('/login');
-
     const sensitiveRoutes = ['/dashboard'];
-
     const isAccessingSensitiveRoute = sensitiveRoutes.some((route) =>
       pathname.startsWith(route)
     );
-
     if (isLoginPage) {
       {
         if (isAuth)
           return NextResponse.redirect(new URL('/dashboard', req.url));
       }
-
       return NextResponse.next();
     }
 
@@ -43,5 +37,5 @@ export default withAuth(
 );
 
 export const config = {
-  matchter: ['/', '/login', '/dashboard/:path*'],
+  matcher: ['/', '/login', '/dashboard/:path*'],
 };
