@@ -52,6 +52,13 @@ const layout = async ({ children }: LayoutProps) => {
           <Icons.Logo className='h-8 w-auto text-indigo-600' />
         </Link>
 
+        {/* conditionally render chat heading */}
+        {friends.length > 0 && (
+          <h3 className='text-xs font-semibold leading-6 text-gray-400'>
+            Your chats
+          </h3>
+        )}
+
         <nav className='flex flex-1 flex-col'>
           <ul role='list' className='flex flex-1 flex-col gap-y-7'>
             <li>
