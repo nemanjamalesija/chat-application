@@ -12,6 +12,7 @@ type PageProps = {
 
 async function getChatMessages(chatId: string) {
   try {
+    // fetch messages
     const results: string[] = await fetchRedis(
       'zrange',
       `chat:${chatId}:messages`,
@@ -19,10 +20,13 @@ async function getChatMessages(chatId: string) {
       -1
     );
 
+    // parse messages
     const dbMessages = results.map((message) => JSON.parse(message) as Message);
 
+    // sort messages (to display them later in reverse order)
     const reversedDbMessages = dbMessages.reverse();
 
+    //validate messages
     const messages = messageArrayValidator.parse(reversedDbMessages);
 
     return messages;
@@ -39,6 +43,7 @@ const Page = async ({ params }: PageProps) => {
 
   const { user } = session;
 
+  // /dashboard/chat/
   const [userId1, userId2] = chatId.split('--');
 
   if (user.id !== userId1 && user.id !== userId2) return notFound();
