@@ -3,6 +3,7 @@ import { authOptions } from '@/lib/auth';
 import { messageArrayValidator } from '@/lib/validations/message';
 import { getServerSession } from 'next-auth';
 import { notFound } from 'next/navigation';
+import Image from 'next/image';
 
 type PageProps = {
   params: {
@@ -52,11 +53,40 @@ const Page = async ({ params }: PageProps) => {
   const chatPartner = (await fetchRedis(
     'get',
     `user:${chatParntnerId}`
-  )) as User;
+  )) as string;
+  const chatPartnerParsed = JSON.parse(chatPartner) as User;
 
   const initialMessages = await getChatMessages(chatId);
 
-  return <div>{params.chatId}</div>;
+  return (
+    <div className='flex-1 justify-between flex flex-col h-full max-h-[calc(100vh-6rem)]'>
+      <div className='flex sm:items-center justify-between py-3 border-b-2 border-gray-200'>
+        <div className='relative flex items-center space-x-4 '>
+          <div className='relative'>
+            <div className='relative w-8 sm:w-12 h-8 sm:h-12'>
+              <Image
+                src={chatPartnerParsed.image}
+                alt={`${chatPartnerParsed.name} profile picture`}
+                fill
+                referrerPolicy='no-referrer'
+                className='rounded-full'
+              />
+            </div>
+          </div>
+          <div className='flex-flex-col leading-tight'>
+            <div className='text-xl flex items-center'>
+              <span className='text-gray-700 mr-3 font-semibold'>
+                {chatPartnerParsed.name}
+              </span>
+            </div>
+            <span className='text-sm text-gray-600'>
+              {chatPartnerParsed.email}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Page;
