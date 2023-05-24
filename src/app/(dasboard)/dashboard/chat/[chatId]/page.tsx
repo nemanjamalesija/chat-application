@@ -46,7 +46,7 @@ const Page = async ({ params }: PageProps) => {
 
   const { user } = session;
 
-  // link: /dashboard/chat/chat1--chat2
+  // url: /dashboard/chat/chat1--chat2
   const [userId1, userId2] = chatId.split('--');
 
   if (user.id !== userId1 && user.id !== userId2) return notFound();
@@ -67,10 +67,10 @@ const Page = async ({ params }: PageProps) => {
           <div className='relative'>
             <div className='relative w-8 sm:w-12 h-8 sm:h-12'>
               <Image
-                src={chatPartnerParsed.image}
-                alt={`${chatPartnerParsed.name} profile picture`}
                 fill
                 referrerPolicy='no-referrer'
+                src={chatPartnerParsed.image}
+                alt={`${chatPartnerParsed.name} profile picture`}
                 className='rounded-full'
               />
             </div>

@@ -12,6 +12,8 @@ const Messages = ({ initialMessages, sessionId }: MessagesProps) => {
   const scrollDownRef = useRef<HTMLDivElement | null>(null);
   const [messages, setMessages] = useState<validMessageType[]>(initialMessages);
 
+  messages.map((m) => console.log(m.senderId));
+
   return (
     <div
       id='messages'
@@ -19,9 +21,12 @@ const Messages = ({ initialMessages, sessionId }: MessagesProps) => {
     >
       <div ref={scrollDownRef}>
         {messages.map((m, i) => {
+          let currentMessageIndex = i === 0 ? 1 : i;
+
           const isCurrentUser = m.senderId === sessionId;
           const hasNextMessageFromSameUser =
-            messages[i - 1].senderId === messages[i].senderId;
+            messages[currentMessageIndex - 1].senderId ===
+            messages[currentMessageIndex].senderId;
 
           return (
             <div key={`${m.id}-${m.timestamp}`} className='chat-message'>

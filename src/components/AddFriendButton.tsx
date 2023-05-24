@@ -1,6 +1,6 @@
 'use client';
 
-import { addFriendValidator } from '@/lib/validations/add-friend';
+import { addFriendValidator } from '@/lib/validations/addFriend';
 import axios, { AxiosError } from 'axios';
 import { FC, useState } from 'react';
 

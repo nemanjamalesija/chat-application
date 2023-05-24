@@ -99,8 +99,9 @@ const layout = async ({ children }: LayoutProps) => {
                 <div className='relative h-8 w-8 bg-gray-50'>
                   <Image
                     fill
+                    sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                     referrerPolicy='no-referrer'
-                    className='rounded-full'
+                    className='rounded-full object-cover'
                     src={session.user.image || ''}
                     alt='Your profile picture'
                   />

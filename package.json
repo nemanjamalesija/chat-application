@@ -24,6 +24,7 @@
     "eslint-config-next": "13.4.2",
     "install": "^0.13.0",
     "lucide-react": "^0.216.0",
+    "nanoid": "^4.0.2",
     "next": "13.4.2",
     "next-auth": "^4.22.1",
     "npm": "^9.6.6",
