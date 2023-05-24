@@ -1,6 +1,7 @@
 'use client';
 import { cn } from '@/lib/utils';
 import { validMessageType } from '@/lib/validations/message';
+import { format } from 'date-fns';
 import React, { useRef, useState } from 'react';
 
 type MessagesProps = {
@@ -8,11 +9,13 @@ type MessagesProps = {
   sessionId: string;
 };
 
+function formatTimestamp(timeStamp: number) {
+  return format(timeStamp, 'HH:mm');
+}
+
 const Messages = ({ initialMessages, sessionId }: MessagesProps) => {
   const scrollDownRef = useRef<HTMLDivElement | null>(null);
   const [messages, setMessages] = useState<validMessageType[]>(initialMessages);
-
-  messages.map((m) => console.log(m.senderId));
 
   return (
     <div
@@ -45,7 +48,7 @@ const Messages = ({ initialMessages, sessionId }: MessagesProps) => {
                   )}
                 >
                   <span
-                    className={cn('px-4 py-2 rounded-lg inline-block', {
+                    className={cn('px-4 py-2 rounded-lg inline-block mb-2', {
                       'bg-indigo-600 text-white': isCurrentUser,
                       'bg-gray-200 text-gray-900': !isCurrentUser,
                       'rounded-br-none':
@@ -54,8 +57,10 @@ const Messages = ({ initialMessages, sessionId }: MessagesProps) => {
                         !hasNextMessageFromSameUser && !isCurrentUser,
                     })}
                   >
-                    {m.text}{' '}
-                    <span className='ml-2 text-xs text-gray-400'></span>
+                    {m.text}
+                    <span className='ml-2 text-xs text-gray-400'>
+                      {formatTimestamp(m.timestamp)}
+                    </span>
                   </span>
                 </div>
               </div>
