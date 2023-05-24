@@ -46,14 +46,17 @@ const FriendRequests: FC<IncomingFriendRequestsProps> = ({
     router.refresh();
   };
 
-  function friendRequestHandler() {
-    console.log('New friend request');
-  }
-
   useEffect(() => {
     pusherClient.subscribe(
       toPusherKey(`user:${sessionId}:incoming_friend_requests`)
     );
+
+    const friendRequestHandler = ({
+      senderId,
+      senderEmail,
+    }: IncomingFriendRequestType): void => {
+      setFriendRequests((prev) => [...prev, { senderId, senderEmail }]);
+    };
 
     pusherClient.bind('incoming_friend_requests', friendRequestHandler);
 
@@ -61,7 +64,6 @@ const FriendRequests: FC<IncomingFriendRequestsProps> = ({
       pusherClient.unsubscribe(
         toPusherKey(`user:${sessionId}:incoming_friend_requests`)
       );
-
       pusherClient.unbind('incoming_friend_requests', friendRequestHandler);
     };
   }, [sessionId]);

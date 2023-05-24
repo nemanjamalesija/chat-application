@@ -13,6 +13,8 @@ export async function POST(req: Request) {
   try {
     const { email: inputEmail } = addFriendValidator.parse(body.email);
 
+    console.log(inputEmail);
+
     const idToAdd = (await fetchRedis(
       'get',
       `user:email:${inputEmail}`
