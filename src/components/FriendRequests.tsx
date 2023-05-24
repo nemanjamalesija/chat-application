@@ -51,12 +51,12 @@ const FriendRequests: FC<IncomingFriendRequestsProps> = ({
       toPusherKey(`user:${sessionId}:incoming_friend_requests`)
     );
 
-    const friendRequestHandler = ({
+    function friendRequestHandler({
       senderId,
       senderEmail,
-    }: IncomingFriendRequestType): void => {
+    }: IncomingFriendRequestType): void {
       setFriendRequests((prev) => [...prev, { senderId, senderEmail }]);
-    };
+    }
 
     pusherClient.bind('incoming_friend_requests', friendRequestHandler);
 
